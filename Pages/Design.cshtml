@@ -2,3 +2,16 @@
 @model DesignModel
 
 <p>@Model.designMessage</p>
+
+<p>@Model.simulationMessage</p>
+
+<p>Cycle Type: @Model.cycleType</p>
+
+<!-- Pickup: Setup a basic input form for engine parameters and get the variables back to the model -->
+<form method="post" asp-page-handler="RunSimulation">
+    <input type="text" asp-for="cycleType"/>
+    <button>Run Simulation</button>
+</form>
+
+
+
