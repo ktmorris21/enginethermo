@@ -1,6 +1,7 @@
 @page
 @model DesignModel
 
+
 <p>@Model.designMessage</p>
 
 <p>@Model.simulationMessage</p>
@@ -9,9 +10,17 @@
 
 <!-- Pickup: Setup a basic input form for engine parameters and get the variables back to the model -->
 <form method="post" asp-page-handler="RunSimulation">
-    <input type="text" asp-for="cycleType"/>
+    <label asp-for="cycleType" class="control-label"></label>
+    <input type="text" asp-for="cycleType" class="form-control"/>
     <button>Run Simulation</button>
+    <span asp-validation-for="cycleType" class="text-danger"></span>
 </form>
+
+@section Scripts {
+    <script>
+        console.log("from design.cshtml")
+    </script>
+}
 
 
 

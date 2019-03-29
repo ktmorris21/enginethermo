@@ -6,27 +6,45 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace enginethermo.Pages
 {
     public class DesignModel : PageModel
     {
-        
+
         public string designMessage { get; set; }
 
-        public int simulationMessage {get; set;}
+        public string simulationMessage {get; set;}
 
         [BindProperty]
-        public int cycleType {get; set;}
+        [Required]
+        [StringLength(5)]
+        [Display(Name = "Cycle Type")]
+        public string cycleType {get; set;}
 
         public void OnGet()
         {
             designMessage = "Hello from design model";
-            cycleType = 2;
+            cycleType = "hi";
         }
 
-        public void OnPostRunSimulation()
+        public void OnPostRunSimulationAsync()
         {
-            simulationMessage = cycleType*2;
+             
+            if (ModelState.IsValid)
+            {
+                // Good validation, proceed
+                simulationMessage = "simulated";
+            }
+            else
+            {
+                // Input validation failed
+                simulationMessage = "error";
+            }
+            
+            simulationMessage = "executed";
+            
+            // Pickup: How to make this validation do automatic things (client side notification, server side notification)
             
 
         }
