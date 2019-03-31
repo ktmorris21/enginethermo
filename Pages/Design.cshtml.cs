@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 
 namespace enginethermo.Pages
@@ -12,23 +13,31 @@ namespace enginethermo.Pages
     public class DesignModel : PageModel
     {
 
-        public string designMessage { get; set; }
-
-        public string simulationMessage {get; set;}
+        public string simulationMessage {get; set;} = "Not run";
 
         [BindProperty]
         [Required]
-        [StringLength(5)]
         [Display(Name = "Cycle Type")]
-        public string cycleType {get; set;}
+        public string cycleType {get; set;} = "SI";
+
+        public List<SelectListItem> cycleTypes {get;} = new List<SelectListItem>
+        {
+            new SelectListItem {Value="SI", Text = "Spark Ignition (Otto Cycle)"},
+            new SelectListItem {Value="CI", Text = "Compressoin Ignition (Diesel Cycle)"},
+        };
+        
+        [BindProperty]
+        [Required]
+        [Range(1,20)]
+        [Display(Name = "Cylinder Count")]
+        public int cylinderCount {get; set;} = 1;
 
         public void OnGet()
         {
-            designMessage = "Hello from design model";
-            cycleType = "hi";
+            
         }
 
-        public void OnPostRunSimulationAsync()
+        public void OnPost()
         {
              
             if (ModelState.IsValid)
@@ -42,11 +51,7 @@ namespace enginethermo.Pages
                 simulationMessage = "error";
             }
             
-            simulationMessage = "executed";
             
-            // Pickup: How to make this validation do automatic things (client side notification, server side notification)
-            
-
         }
     }
 }
