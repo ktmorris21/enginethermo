@@ -6,35 +6,26 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
+using enginethermo.Models;
 
 namespace enginethermo.Pages
 {
     public class DesignModel : PageModel
     {
-
-        public string simulationMessage {get; set;} = "Not run";
-
         [BindProperty]
-        [Required]
-        [Display(Name = "Cycle Type")]
-        public string cycleType {get; set;} = "SI";
+        public engineDefinition engineDefinition {get; set;} = new engineDefinition();
+   
+        public string simulationMessage {get; set;} = "Not run";
 
         public List<SelectListItem> cycleTypes {get;} = new List<SelectListItem>
         {
             new SelectListItem {Value="SI", Text = "Spark Ignition (Otto Cycle)"},
             new SelectListItem {Value="CI", Text = "Compressoin Ignition (Diesel Cycle)"},
         };
-        
-        [BindProperty]
-        [Required]
-        [Range(1,20)]
-        [Display(Name = "Cylinder Count")]
-        public int cylinderCount {get; set;} = 1;
 
         public void OnGet()
         {
-            
+            simulationMessage = "Not run";
         }
 
         public void OnPost()

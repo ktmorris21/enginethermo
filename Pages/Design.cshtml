@@ -3,31 +3,36 @@
 
 <p>@Model.simulationMessage</p>
 
-<p>Cycle Type: @Model.cycleType</p>
+<p>Cycle Type: @Model.engineDefinition.cycleType</p>
 
 
 <form method="post" asp-page-handler="RunSimulation">
     
+    <h2>Model Definition</h2>
     <!-- Summary level validation -->
     <div asp-validation-summary="All" class="text-danger"></div>
     
-    <!-- Cycle Type selection -->
-    <label asp-for="cycleType" class="control-label"></label>
-    <select asp-for="cycleType" asp-items="Model.cycleTypes" class="form-control"></select>
-    <br>
     
     <!-- Cylinder count -->
-    <label asp-for="cylinderCount" class="control-label"></label>
-    <input asp-for="cylinderCount" type="number" class="form-control">
-    <span asp-validation-for="cylinderCount" class="text-danger"></span>
-    <br><br>
-    
+    <h3>Geometry</h3>
+    <label asp-for="engineDefinition.cylinderCount" class="control-label"></label>
+    <input asp-for="engineDefinition.cylinderCount" type="number" class="form-control">
+    <span asp-validation-for="engineDefinition.cylinderCount" class="text-danger"></span>
+    <br>    
+
+    <!-- Cylinder Geometry -->
+    <label class="control-label">Cylinder Geometry</label><br>
+    <label asp-for="engineDefinition.cylinderDisplacement"></label>
+    <input asp-for="engineDefinition.cylinderDisplacement" type="number" id="cylinderDisplacement">
+    <span asp-validation-for="engineDefinition.cylinderDisplacement" class="text-danger"></span>
+    <span asp-validation-for="engineDefinition.cylinderClearance" class="text-danger"></span>
+
     <!-- Cylinder Geometry Modal -->
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cylinderGeometryModal">
         Define Geometry
     </button>
     <div class="modal fade" id="cylinderGeometryModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Cylinder Geometry Definition</h5>
@@ -36,7 +41,19 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Pick 2 stuff here</p>
+                    <!-- Modal Body Content Here -->
+                    <p>Choose one to define thermodynamic model volume parameters:</p>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <input type="radio" id="geometryViaDisplacement" name="cylinderGeometryDefMethod" value="displacement" checked>
+                            <label for="geometryViaDisplacement">Displacement and compression ratio</label>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <input type="radio" id="geometryViaStrokeBore" name="cylinderGeometryDefMethod" value="strokeBore">
+                            <label for="geometryViaStrokeBore">Stroke/Bore and Clearance Volume</label>
+                        </div>
+                    </div>
+                    <!-- End Modal Body Content -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
@@ -44,7 +61,13 @@
             </div>
         </div>
     </div>
-    
+
+    <!-- Cycle Type selection -->
+    <h3>Thermodynamics</h3>
+    <label asp-for="engineDefinition.cycleType" class="control-label"></label>
+    <select asp-for="engineDefinition.cycleType" asp-items="Model.cycleTypes" class="form-control"></select>
+    <br>
+
     <!-- Run Simulation! -->
     <br><br>
     <button type="submit">Run Simulation</button>

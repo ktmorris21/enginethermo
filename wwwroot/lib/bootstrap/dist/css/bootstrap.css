@@ -5986,6 +5986,12 @@ button.close {
     width: 900px;
   }
 }
+/* KTM add xl model def - this version doesn't seem to include so got def from bootstrap docs */
+@media (min-width: 992px) {
+  .modal-xl {
+    width: 1140px;
+  }
+}
 .tooltip {
   position: absolute;
   z-index: 1070;
