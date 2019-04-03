@@ -35,3 +35,11 @@ body {
         display: none;
     }
 }
+
+.skinnyNumber {
+    width: 80px;
+}
+
+input {
+    text-align: center;
+}

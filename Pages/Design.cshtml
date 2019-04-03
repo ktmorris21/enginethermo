@@ -18,24 +18,24 @@
     <label asp-for="engineDefinition.cylinderCount" class="control-label"></label>
     <input asp-for="engineDefinition.cylinderCount" type="number" class="form-control">
     <span asp-validation-for="engineDefinition.cylinderCount" class="text-danger"></span>
-    <br>    
+    <br><br>    
 
     <!-- Cylinder Geometry -->
-    <label class="control-label">Cylinder Geometry</label><br>
-    <label asp-for="engineDefinition.cylinderDisplacement"></label>
-    <input asp-for="engineDefinition.cylinderDisplacement" type="number" id="cylinderDisplacement">
+    <label class="control-label">Cylinder Volumes</label><br>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cylinderGeometryModal">
+        Define Volumes
+    </button>
+    <br>
     <span asp-validation-for="engineDefinition.cylinderDisplacement" class="text-danger"></span>
     <span asp-validation-for="engineDefinition.cylinderClearance" class="text-danger"></span>
+    <br><br>
 
     <!-- Cylinder Geometry Modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cylinderGeometryModal">
-        Define Geometry
-    </button>
     <div class="modal fade" id="cylinderGeometryModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Cylinder Geometry Definition</h5>
+                    <h4 class="modal-title">Cylinder Geometry Definition</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                     </button>
@@ -44,15 +44,60 @@
                     <!-- Modal Body Content Here -->
                     <p>Choose one to define thermodynamic model volume parameters:</p>
                     <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="col-lg-6 col-md-6 col-sm-12" style="margin-top: 15px;">
                             <input type="radio" id="geometryViaDisplacement" name="cylinderGeometryDefMethod" value="displacement" checked>
-                            <label for="geometryViaDisplacement">Displacement and compression ratio</label>
+                            <label for="geometryViaDisplacement">Use displacement and compression ratio.</label>
+                            <br><br>
+                            <label for="cylinderDisplacementRawInput" class="control-label">Cylinder Displacement</label><br>
+                            <input type="number" id="cylinderDisplacementRawInput" class="skinnyNumber">
+                            <select id="cylinderDisplacementInputUnits">
+                                <option value="0.001">L</option>
+                                <option value="0.00001">cc</option>
+                                <option value="0.000016387">in&sup3;</option>
+                            </select>
+                            <br><br>
+                            <label for="cylinderCompressionRatioRawInput">Compression Ratio</label><br>
+                            <input type="number" id="cylinderCompressionRatioRawInput" class="skinnyNumber">
+                            <span> : 1</span>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="col-lg-6 col-md-6 col-sm-12" style="margin-top: 15px;">
                             <input type="radio" id="geometryViaStrokeBore" name="cylinderGeometryDefMethod" value="strokeBore">
-                            <label for="geometryViaStrokeBore">Stroke/Bore and Clearance Volume</label>
+                            <label for="geometryViaStrokeBore">Manually specify stroke, bore, and clearance volume.</label>
+                            <br><br>
+                            <label for="cylinderStrokeRawInput" class="control-label">Piston Stroke</label><br>
+                            <input type="number" id="cylinderStrokeRawInput" class="skinnyNumber">
+                            <select id="cylinderStrokeInputUnits">
+                                <option value="0.01">cm</option>
+                                <option value="0.0254">in</option>
+                            </select>
+                            <br><br>
+                            <label for="cylinderBoreRawInput" class="control-label">Cylinder Bore</label><br>
+                            <input type="number" id="cylinderBoreRawInput" class="skinnyNumber">
+                            <select id="cylinderBoreInputUnits">
+                                <option value="0.01">cm</option>
+                                <option value="0.0254">in</option>
+                            </select>
+                            <br><br>
+
+                            <label for="cylinderClearanceVolumeRawInput" class="control-label">Clearance Volume</label><br>
+                            <input type="number" id="cylinderClearanceVolumeRawInput" class="skinnyNumber">
+                            <select id="cylinderClearanceVolumeInputUnits">
+                                <option value="0.00001">cc</option>
+                                <option value="0.000016387">in&sup3;</option>
+                                <option value="0.001">L</option>
+                            </select>
+
                         </div>
                     </div>
+                    <hr>
+                    <p>Outputs for thermodynamic model:</p>
+                    <label class="control-label" asp-for="engineDefinition.cylinderDisplacement"></label>
+                    <input asp-for="engineDefinition.cylinderDisplacement" type="number" id="cylinderDisplacement" class="skinnyNumber" disabled>
+                    <span>m<sup>3</sup></span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <label class="control-label" asp-for="engineDefinition.cylinderClearance"></label>
+                    <input asp-for="engineDefinition.cylinderClearance" type="number" id="cylinderClearance" class="skinnyNumber" disabled>
+                    <span>m<sup>3</sup></span>
                     <!-- End Modal Body Content -->
                 </div>
                 <div class="modal-footer">
@@ -70,7 +115,7 @@
 
     <!-- Run Simulation! -->
     <br><br>
-    <button type="submit">Run Simulation</button>
+    <button type="submit" class="btn btn-primary">Run Simulation</button>
     
     
 </form>
@@ -81,6 +126,3 @@
         
     </script>
 }
-
-
-
