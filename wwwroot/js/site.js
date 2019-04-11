@@ -1,12 +1,17 @@
 ﻿// Get inital model state values from hidden inputs
- var modelCylinderCount = $("#modelStateCylinderCount").val();
+ var initialModelCylinderCount = $("#modelStateCylinderCount").val();
 
  
  // Vue app
  var engineThermoApp = new Vue({
     el: "#engineThermoApp",
     data: {
-        vueCylinderCount: modelCylinderCount        
+        modelCylinderCount: initialModelCylinderCount,
+        geometryMode: 'displacement'
     }
  });
+
+
+ // Set jquery validation to work on all inputs (esp. our hidden inputs used to store state)
+ $.validator.setDefaults({ ignore: null });
  

@@ -5,12 +5,12 @@
 
 <p>Cycle Type: @Model.engineDefinition.cycleType</p>
 
-<span>Test vue: </span>
-<input v-model="vueCylinderCount">
 
 
 <form method="post" asp-page-handler="RunSimulation">
-    <partial name="modelStateInputs.cshtml" />
+    <!-- Hidden inputs for model state management -->
+    <input id="modelStateCylinderCount" asp-for="engineDefinition.cylinderCount" type="hidden" v-model="modelCylinderCount" />
+
     <h2>Model Definition</h2>
     <!-- Summary level validation -->
     <div asp-validation-summary="All" class="text-danger"></div>
@@ -19,7 +19,7 @@
     <!-- Cylinder count -->
     <h3>Geometry</h3>
     <label asp-for="engineDefinition.cylinderCount" class="control-label"></label>
-    <input id="cylinderCountUserInput" type="number" class="form-control">
+    <input id="cylinderCountUserInput" type="number" min="1" max="20" class="form-control" v-model="modelCylinderCount">
     <span asp-validation-for="engineDefinition.cylinderCount" class="text-danger"></span>
     <br><br>    
 
@@ -48,12 +48,13 @@
                     <p>Choose one to define thermodynamic model volume parameters:</p>
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-12" style="margin-top: 15px;">
-                            <input type="radio" class="displacementInputs" id="geometryViaDisplacement" name="cylinderGeometryDefMethod" value="displacement" checked>
+                            <input type="radio" class="displacementInputs" id="geometryViaDisplacement" name="cylinderGeometryDefMethod" value="displacement" 
+                                v-model="geometryMode" checked>
                             <label for="geometryViaDisplacement">Use displacement and compression ratio.</label>
                             <br><br>
                             <label for="cylinderDisplacementRawInput" class="control-label">Cylinder Displacement</label><br>
-                            <input type="number" class="displacementInputs" id="cylinderDisplacementRawInput" class="skinnyNumber">
-                            <select class="displacementInputs" id="cylinderDisplacementInputUnits">
+                            <input type="number" class="displacementInputs" id="cylinderDisplacementRawInput" class="skinnyNumber" v-bind:disabled="geometryMode !== 'displacement'">
+                            <select class="displacementInputs" id="cylinderDisplacementInputUnits"  v-bind:disabled="geometryMode !== 'displacement'">
                                 <option value="0.001">L</option>
                                 <option value="0.00001">cc</option>
                                 <option value="0.000016387">in&sup3;</option>
@@ -61,31 +62,31 @@
                             </select>
                             <br><br>
                             <label for="cylinderCompressionRatioRawInput">Compression Ratio</label><br>
-                            <input type="number" id="cylinderCompressionRatioRawInput" class="skinnyNumber displacementInputs">
+                            <input type="number" id="cylinderCompressionRatioRawInput" class="skinnyNumber displacementInputs" v-bind:disabled="geometryMode !== 'displacement'"> 
                             <span> : 1</span>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12" style="margin-top: 15px;">
-                            <input type="radio" class="strokeBoreInputs" id="geometryViaStrokeBore" name="cylinderGeometryDefMethod" value="strokeBore">
+                            <input type="radio" class="strokeBoreInputs" id="geometryViaStrokeBore" name="cylinderGeometryDefMethod" value="strokeBore" v-model="geometryMode">
                             <label for="geometryViaStrokeBore">Manually specify stroke, bore, and clearance volume.</label>
                             <br><br>
                             <label for="cylinderStrokeRawInput" class="control-label">Piston Stroke</label><br>
-                            <input type="number" id="cylinderStrokeRawInput" class="skinnyNumber strokeBoreInputs" disabled>
-                            <select class="strokeBoreInputs" id="cylinderStrokeInputUnits" disabled>
+                            <input type="number" id="cylinderStrokeRawInput" class="skinnyNumber strokeBoreInputs" v-bind:disabled="geometryMode === 'displacement'">
+                            <select class="strokeBoreInputs" id="cylinderStrokeInputUnits" v-bind:disabled="geometryMode === 'displacement'">
                                 <option value="0.01">cm</option>
                                 <option value="0.0254">in</option>
                             </select>
                             <br><br>
                             <label for="cylinderBoreRawInput" class="control-label">Cylinder Bore</label><br>
-                            <input type="number" id="cylinderBoreRawInput" class="skinnyNumber strokeBoreInputs" disabled>
-                            <select class="strokeBoreInputs" id="cylinderBoreInputUnits" disabled>
+                            <input type="number" id="cylinderBoreRawInput" class="skinnyNumber strokeBoreInputs" v-bind:disabled="geometryMode === 'displacement'">
+                            <select class="strokeBoreInputs" id="cylinderBoreInputUnits" v-bind:disabled="geometryMode === 'displacement'">
                                 <option value="0.01">cm</option>
                                 <option value="0.0254">in</option>
                             </select>
                             <br><br>
 
                             <label for="cylinderClearanceVolumeRawInput" class="control-label">Clearance Volume</label><br>
-                            <input type="number" id="cylinderClearanceVolumeRawInput" class="skinnyNumber strokeBoreInputs" disabled>
-                            <select class="strokeBoreInputs" id="cylinderClearanceVolumeInputUnits" disabled>
+                            <input type="number" id="cylinderClearanceVolumeRawInput" class="skinnyNumber strokeBoreInputs" v-bind:disabled="geometryMode === 'displacement'">
+                            <select class="strokeBoreInputs" id="cylinderClearanceVolumeInputUnits" v-bind:disabled="geometryMode === 'displacement'">
                                 <option value="0.00001">cc</option>
                                 <option value="0.000016387">in&sup3;</option>
                                 <option value="0.001">L</option>
