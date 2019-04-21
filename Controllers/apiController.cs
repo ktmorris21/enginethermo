@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
+using enginethermo;
 
-namespace enginethermo {
-
+namespace enginethermo.API
+{
     [Route("api/[controller]")]
     [ApiController]
     public class createDatabaseController : ControllerBase
@@ -53,5 +54,4 @@ namespace enginethermo {
             return "test function ran";
         }
     }
-
 }
