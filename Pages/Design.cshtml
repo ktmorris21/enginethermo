@@ -1,11 +1,10 @@
 @page
 @model DesignModel
 
+<div id="engineThermoApp">
 <p>@Model.simulationMessage</p>
 
 <p>Cycle Type: @Model.engineDefinition.cycleType</p>
-
-
 
 <form method="post" asp-page-handler="RunSimulation">
     <!-- Hidden inputs for model state management -->
@@ -97,13 +96,26 @@
                     </div>
                     <hr>
                     <p>Outputs for thermodynamic model:</p>
-                    <label class="control-label" asp-for="engineDefinition.cylinderDisplacement"></label>
-                    <input asp-for="engineDefinition.cylinderDisplacement" type="number" id="cylinderDisplacement" class="skinnyNumber" disabled>
-                    <span>m<sup>3</sup></span>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <label class="control-label" asp-for="engineDefinition.cylinderClearance"></label>
-                    <input asp-for="engineDefinition.cylinderClearance" type="number" id="cylinderClearance" class="skinnyNumber" disabled>
-                    <span>m<sup>3</sup></span>
+                    <template v-if="geometryMode==='displacement'">
+                        <p>Displacement Mode</p>
+                        <label class="control-label" asp-for="engineDefinition.cylinderDisplacement"></label>
+                        <input asp-for="engineDefinition.cylinderDisplacement" type="number" id="cylinderDisplacement" class="skinnyNumber" disabled>
+                        <span>m<sup>3</sup></span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <label class="control-label" asp-for="engineDefinition.cylinderClearance"></label>
+                        <input asp-for="engineDefinition.cylinderClearance" type="number" id="cylinderClearance" class="skinnyNumber" disabled>
+                        <span>m<sup>3</sup></span>
+                    </template>
+                    <template v-else>
+                        <p>Stroke/Bore Mode</p>
+                        <label class="control-label" asp-for="engineDefinition.cylinderDisplacement"></label>
+                        <input asp-for="engineDefinition.cylinderDisplacement" type="number" id="cylinderDisplacement" class="skinnyNumber" disabled>
+                        <span>m<sup>3</sup></span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <label class="control-label" asp-for="engineDefinition.cylinderClearance"></label>
+                        <input asp-for="engineDefinition.cylinderClearance" type="number" id="cylinderClearance" class="skinnyNumber" disabled>
+                        <span>m<sup>3</sup></span>
+                    </template>
                     <!-- End Modal Body Content -->
                 </div>
                 <div class="modal-footer">
@@ -119,6 +131,25 @@
     <select asp-for="engineDefinition.cycleType" asp-items="Model.cycleTypes" class="form-control"></select>
     <br>
 
+    <p>Temp extra spacing</p>
+    <p>Temp extra spacing</p>
+    <p>Temp extra spacing</p>
+    <p>Temp extra spacing</p>
+    <p>Temp extra spacing</p>
+    <p>Temp extra spacing</p>
+    <p>Temp extra spacing</p>
+    <p>Temp extra spacing</p>
+    <p>Temp extra spacing</p>
+    <p>Temp extra spacing</p>
+    <p>Temp extra spacing</p>
+    <p>Temp extra spacing</p>
+    <p>Temp extra spacing</p>
+    <p>Temp extra spacing</p>
+    <p>Temp extra spacing</p>
+    <p>Temp extra spacing</p>
+    <p>Temp extra spacing</p>
+    <p>Temp extra spacing</p>
+
     <!-- Run Simulation! -->
     <br><br>
     <button type="submit" class="btn btn-primary">Run Simulation</button>
@@ -126,6 +157,7 @@
     
 </form>
 
+</div>
 
 @section Scripts {
     <script>
