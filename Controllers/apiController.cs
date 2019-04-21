@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 
@@ -10,15 +11,43 @@ namespace enginethermo {
         [HttpGet]
         public ActionResult<string> createDatabase()
         {
-            string connectionString = "Persist Security Info=False;database=EngineThermo;server=167.99.104.21;user id=root;Password=21Ktm4154^";
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(Shared.connectionString))
             {
-                conn.Open();
-                string cmdString = @"CREATE TABLE IF NOT EXISTS testing (
-                    testString VARCHAR(255)
-                )";
-                MySqlCommand cmd = new MySqlCommand(cmdString, conn);
-                cmd.ExecuteNonQuery();
+                connection.Open();
+
+
+                // Drop all existing tables
+                List<string> tables = new List<string>(); 
+
+                string queryString = @"SELECT table_name FROM information_schema.tables
+                    WHERE table_schema = 'EngineThermo'";
+                MySqlCommand command = new MySqlCommand(queryString, connection);
+                MySqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    tables.Add(reader.GetString(0));
+                }
+
+                reader.Close();
+
+                foreach (string table in tables)
+                {
+                    queryString = $"DROP TABLE {table};";
+                    command = new MySqlCommand(queryString, connection);
+                    command.ExecuteNonQuery();
+                }
+
+
+                // Create each table
+                queryString = @"CREATE TABLE testTable (
+                        testTitle VARCHAR(10),
+                        testAttribute int
+                    );";
+                command = new MySqlCommand(queryString, connection);
+                command.ExecuteNonQuery();
+
+
             }
 
             return "test function ran";
